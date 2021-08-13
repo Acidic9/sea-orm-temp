@@ -5,9 +5,11 @@ use syn::{parse_macro_input, DeriveInput};
 
 mod derives;
 
-#[proc_macro_derive(DeriveEntity, attributes(table))]
+#[proc_macro_derive(DeriveEntity, attributes(sea))]
 pub fn derive_entity(input: TokenStream) -> TokenStream {
     let DeriveInput { ident, attrs, .. } = parse_macro_input!(input);
+
+    println!("{:#?}", attrs);
 
     match derives::expand_derive_entity(ident, attrs) {
         Ok(ts) => ts.into(),
@@ -25,7 +27,7 @@ pub fn derive_primary_key(input: TokenStream) -> TokenStream {
     }
 }
 
-#[proc_macro_derive(DeriveColumn)]
+#[proc_macro_derive(DeriveColumn, attributes(rename))]
 pub fn derive_column(input: TokenStream) -> TokenStream {
     let DeriveInput { ident, data, .. } = parse_macro_input!(input);
 
