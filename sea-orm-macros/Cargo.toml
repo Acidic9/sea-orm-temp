@@ -16,7 +16,11 @@ path = "src/lib.rs"
 proc-macro = true
 
 [dependencies]
+async-graphql = { version = "2.9", features = ["uuid", "chrono"], optional = true }
 syn = { version = "^1", default-features = false, features = [ "derive", "clone-impls", "parsing", "proc-macro", "printing" ] }
 quote = "^1"
 heck = "^0.3"
 proc-macro2 = "^1"
+
+[features]
+graphql = ["async-graphql"]

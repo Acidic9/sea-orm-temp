@@ -1,6 +1,6 @@
-use heck::SnakeCase;
+use heck::{CamelCase, MixedCase, SnakeCase};
 use proc_macro2::{Ident, TokenStream};
-use quote::{quote, quote_spanned};
+use quote::{format_ident, quote, quote_spanned};
 use syn::{Data, DataEnum, Fields, Variant};
 
 pub fn impl_default_as_str(ident: &Ident, data: &Data) -> syn::Result<TokenStream> {
@@ -43,9 +43,45 @@ pub fn impl_default_as_str(ident: &Ident, data: &Data) -> syn::Result<TokenStrea
 
 pub fn expand_derive_column(ident: &Ident, data: &Data) -> syn::Result<TokenStream> {
     let impl_iden = expand_derive_custom_column(ident, data)?;
+    let parse_error_iden = format_ident!("Parse{}Err", ident);
+
+    let data_enum = match data {
+        Data::Enum(data_enum) => data_enum,
+        _ => panic!("DeriveColumn can only be used on an enum"),
+    };
+
+    let columns = data_enum.variants.iter().map(|column| {
+        let column_iden = column.ident.clone();
+        let column_str_snake = column_iden.to_string().to_snake_case();
+        let column_str_mixed = column_iden.to_string().to_mixed_case();
+        println!(
+            "{}",
+            quote!(
+                #column_str_snake | #column_str_mixed => Ok(#ident::#column_iden)
+            )
+            .to_string()
+        );
+        quote!(
+            #column_str_snake | #column_str_mixed => Ok(#ident::#column_iden)
+        )
+    });
 
     Ok(quote!(
         #impl_iden
+
+        #[derive(Debug, Clone, Copy)]
+        pub struct #parse_error_iden;
+
+        impl std::str::FromStr for #ident {
+            type Err = #parse_error_iden;
+
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                match s {
+                    #(#columns),*,
+                    _ => Err(#parse_error_iden),
+                }
+            }
+        }
 
         impl sea_orm::IdenStatic for #ident {
             fn as_str(&self) -> &str {

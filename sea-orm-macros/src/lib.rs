@@ -9,8 +9,6 @@ mod derives;
 pub fn derive_entity(input: TokenStream) -> TokenStream {
     let DeriveInput { ident, attrs, .. } = parse_macro_input!(input);
 
-    println!("{:#?}", attrs);
-
     match derives::expand_derive_entity(ident, attrs) {
         Ok(ts) => ts.into(),
         Err(e) => e.to_compile_error().into(),

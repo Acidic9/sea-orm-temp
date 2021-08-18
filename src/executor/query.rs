@@ -35,7 +35,7 @@ impl QueryResult {
 }
 
 impl fmt::Debug for QueryResultRow {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, _f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             #[cfg(feature = "sqlx-mysql")]
             Self::SqlxMySql(row) => write!(f, "{:?}", row),
@@ -121,7 +121,7 @@ macro_rules! try_getable_unsigned {
     ( $type: ty ) => {
         impl TryGetable for $type {
             fn try_get(res: &QueryResult, pre: &str, col: &str) -> Result<Self, DbErr> {
-                let column = format!("{}{}", pre, col);
+                let _column = format!("{}{}", pre, col);
                 match &res.row {
                     #[cfg(feature = "sqlx-mysql")]
                     QueryResultRow::SqlxMySql(row) => {
@@ -147,7 +147,7 @@ macro_rules! try_getable_unsigned {
 
         impl TryGetable for Option<$type> {
             fn try_get(res: &QueryResult, pre: &str, col: &str) -> Result<Self, DbErr> {
-                let column = format!("{}{}", pre, col);
+                let _column = format!("{}{}", pre, col);
                 match &res.row {
                     #[cfg(feature = "sqlx-mysql")]
                     QueryResultRow::SqlxMySql(row) => {
@@ -183,7 +183,7 @@ macro_rules! try_getable_mysql {
     ( $type: ty ) => {
         impl TryGetable for $type {
             fn try_get(res: &QueryResult, pre: &str, col: &str) -> Result<Self, DbErr> {
-                let column = format!("{}{}", pre, col);
+                let _column = format!("{}{}", pre, col);
                 match &res.row {
                     #[cfg(feature = "sqlx-mysql")]
                     QueryResultRow::SqlxMySql(row) => {
@@ -207,7 +207,7 @@ macro_rules! try_getable_mysql {
 
         impl TryGetable for Option<$type> {
             fn try_get(res: &QueryResult, pre: &str, col: &str) -> Result<Self, DbErr> {
-                let column = format!("{}{}", pre, col);
+                let _column = format!("{}{}", pre, col);
                 match &res.row {
                     #[cfg(feature = "sqlx-mysql")]
                     QueryResultRow::SqlxMySql(row) => {

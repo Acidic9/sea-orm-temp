@@ -200,6 +200,7 @@
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/SeaQL/sea-query/master/docs/SeaQL icon dark.png"
 )]
+#![feature(specialization)]
 
 mod database;
 mod driver;
@@ -207,8 +208,8 @@ pub mod entity;
 pub mod error;
 mod executor;
 pub mod query;
-#[doc(hidden)]
-pub mod tests_cfg;
+// #[doc(hidden)]
+// pub mod tests_cfg;
 mod util;
 
 pub use database::*;

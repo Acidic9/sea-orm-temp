@@ -19,6 +19,7 @@ name = "sea_orm"
 path = "src/lib.rs"
 
 [dependencies]
+async-graphql = { version = "2.9", features = ["uuid", "chrono"], optional = true }
 async-stream = { version = "^0.3" }
 chrono = { version = "^0", optional = true }
 futures = { version = "^0.3" }
@@ -26,7 +27,7 @@ futures-util = { version = "^0.3" }
 rust_decimal = { version = "^1", optional = true }
 sea-orm-macros = { path = "./sea-orm-macros", optional = true }
 # sea-query = { version = "^0.12.10", path = "../sea-query" }
-sea-query = { version = "^0.12.10", git = "https://github.com/SeaQL/sea-query.git", branch = "impl-into-self" }
+sea-query = { git = "https://github.com/SeaQL/sea-query.git", branch = "master", features = [ "thread-safe" ] }
 sea-strum = { version = "^0.21", features = ["derive", "sea-orm"] }
 serde = { version = "^1.0", features = ["derive"] }
 sqlx = { version = "^0.5", optional = true }
@@ -54,6 +55,7 @@ default = [
     "with-uuid",
 ]
 macros = ["sea-orm-macros"]
+graphql = ["async-graphql", "sea-orm-macros/graphql"]
 mock = []
 with-json = ["serde_json", "sea-query/with-json"]
 with-chrono = ["chrono", "sea-query/with-chrono"]

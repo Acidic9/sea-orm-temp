@@ -7,7 +7,7 @@ use sea_query::{Alias, Iden, IntoIden, IntoTableRef, IntoValueTuple, TableRef};
 pub use sea_strum::IntoEnumIterator as Iterable;
 use std::fmt::Debug;
 
-pub trait IdenStatic: Iden + Copy + Debug + 'static {
+pub trait IdenStatic: Iden + Copy + Debug + Send + Sync + 'static {
     fn as_str(&self) -> &str;
 }
 

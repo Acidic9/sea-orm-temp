@@ -6,6 +6,9 @@ pub use crate::{
     RelationTrait, Select, Value,
 };
 
+#[cfg(feature = "graphql")]
+pub use async_graphql::InputObject;
+
 #[cfg(feature = "with-json")]
 pub use serde_json::Value as Json;
 

@@ -1,6 +1,8 @@
 mod active_model;
 mod base_entity;
 mod column;
+#[cfg(feature = "graphql")]
+mod graphql;
 mod identity;
 mod model;
 pub mod prelude;

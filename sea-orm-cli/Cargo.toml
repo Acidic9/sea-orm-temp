@@ -29,7 +29,7 @@ sea-schema = { path = "../sea-schema", default-features = false, features = [
 sqlx = { version = "^0.5", default-features = false, features = [ "mysql", "postgres" ] }
 
 [features]
-default = [ "runtime-async-std-native-tls" ]
+default = [  ]
 runtime-actix-native-tls = [
     "sqlx/runtime-actix-native-tls",
     "sea-schema/runtime-actix-native-tls",
