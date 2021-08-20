@@ -200,6 +200,7 @@
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/SeaQL/sea-query/master/docs/SeaQL icon dark.png"
 )]
+#![allow(incomplete_features)]
 #![feature(specialization)]
 
 mod database;
@@ -221,7 +222,7 @@ pub use query::*;
 
 pub use sea_orm_macros::{
     DeriveActiveModel, DeriveActiveModelBehavior, DeriveColumn, DeriveCustomColumn, DeriveEntity,
-    DeriveModel, DerivePrimaryKey, FromQueryResult,
+    DeriveModel, DerivePartialModel, DerivePrimaryKey, FromQueryResult,
 };
 
 pub use sea_query;

@@ -1,4 +1,4 @@
-use heck::{CamelCase, MixedCase, SnakeCase};
+use heck::{MixedCase, SnakeCase};
 use proc_macro2::{Ident, TokenStream};
 use quote::{format_ident, quote, quote_spanned};
 use syn::{Data, DataEnum, Fields, Variant};
@@ -54,13 +54,6 @@ pub fn expand_derive_column(ident: &Ident, data: &Data) -> syn::Result<TokenStre
         let column_iden = column.ident.clone();
         let column_str_snake = column_iden.to_string().to_snake_case();
         let column_str_mixed = column_iden.to_string().to_mixed_case();
-        println!(
-            "{}",
-            quote!(
-                #column_str_snake | #column_str_mixed => Ok(#ident::#column_iden)
-            )
-            .to_string()
-        );
         quote!(
             #column_str_snake | #column_str_mixed => Ok(#ident::#column_iden)
         )
@@ -68,6 +61,15 @@ pub fn expand_derive_column(ident: &Ident, data: &Data) -> syn::Result<TokenStre
 
     Ok(quote!(
         #impl_iden
+
+        impl #ident {
+            pub fn from_graphql_ctx(ctx: &async_graphql::context::Context<'_>) -> Vec<Self> {
+                ctx.field()
+                    .selection_set()
+                    .filter_map(|selection| std::str::FromStr::from_str(selection.name()).ok())
+                    .collect()
+            }
+        }
 
         #[derive(Debug, Clone, Copy)]
         pub struct #parse_error_iden;

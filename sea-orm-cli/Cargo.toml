@@ -1,6 +1,3 @@
-[workspace]
-# A separate workspace for sea-orm-cli
-
 [package]
 name = "sea-orm-cli"
 version = "0.1.2"
